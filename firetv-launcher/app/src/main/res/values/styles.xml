@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LauncherTheme" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_gradient</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:windowShowWallpaper">false</item>
+    </style>
+    <style name="LauncherDialog" parent="@android:style/Theme.Material.Dialog.Alert">
+        <item name="android:colorAccent">@color/accent</item>
+    </style>
+    <style name="RowTitle">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+</resources>
