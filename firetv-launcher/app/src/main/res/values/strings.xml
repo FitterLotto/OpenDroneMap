@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TV Home</string>
+    <string name="home_service_label">TV Home – Home button</string>
+    <string name="home_service_description">Opens TV Home whenever the Fire TV home screen appears, so the Home button takes you to TV Home. It only watches which app is on screen and when Home is pressed. It does not read screen content or anything you type.</string>
 </resources>

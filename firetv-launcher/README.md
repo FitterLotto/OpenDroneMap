@@ -59,5 +59,6 @@ To publish it anywhere, set up your own signing config.
 
 - `app/src/main/java/.../MainActivity.java` — screen, rows, tiles, focus and the options menu
 - `app/src/main/java/.../AppRepository.java` — finds installed apps; stores favorites and recents
+- `app/src/main/java/.../HomeRedirectService.java` — optional Home-button redirect (accessibility service)
 - `app/src/main/java/.../WeatherClient.java` — location + Open-Meteo weather, off the main thread
 - `app/src/main/res/` — layout, colors, focus styles, icon and banner

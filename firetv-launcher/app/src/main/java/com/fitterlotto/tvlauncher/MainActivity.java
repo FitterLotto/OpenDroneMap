@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ResolveInfo;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -268,6 +270,17 @@ public class MainActivity extends Activity {
         rowsContainer.addView(rowTitle("System"));
         LinearLayout strip = tileStrip();
         strip.setPadding(0, dp(10), 0, dp(6));
+        boolean homeOn = HomeRedirectService.isEnabled(this);
+        strip.addView(glyphTile("sys:homebutton", homeOn ? "⌂" : "⚠",
+                homeOn ? "Home button: TV Home" : "Home button: set up",
+                () -> {
+                    if (!HomeRedirectService.isEnabled(this)) {
+                        Toast.makeText(this, "Turn on \"" + getString(R.string.home_service_label)
+                                + "\" in Accessibility", Toast.LENGTH_LONG).show();
+                    }
+                    startSafely(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+                }));
+        strip.addView(glyphTile("sys:amazonhome", "◧", "Amazon Home", this::openAmazonHome));
         strip.addView(glyphTile("sys:settings", "⚙", "Settings",
                 () -> startSafely(new Intent(Settings.ACTION_SETTINGS))));
         strip.addView(glyphTile("sys:network", "📶", "Network",
@@ -427,6 +440,19 @@ public class MainActivity extends Activity {
                 Toast.makeText(this, "Not available on this device", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    /** Opens Fire OS's own home screen without the redirect bouncing straight back. */
+    private void openAmazonHome() {
+        Intent home = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME);
+        for (ResolveInfo ri : getPackageManager().queryIntentActivities(home, 0)) {
+            if (ri.activityInfo == null || getPackageName().equals(ri.activityInfo.packageName)) continue;
+            HomeRedirectService.allowAmazonHomeBriefly(this);
+            startSafely(new Intent(home).setComponent(
+                    new ComponentName(ri.activityInfo.packageName, ri.activityInfo.name)));
+            return;
+        }
+        Toast.makeText(this, "Amazon's home screen wasn't found", Toast.LENGTH_SHORT).show();
     }
 
     private void showAppOptions(final AppEntry app) {
